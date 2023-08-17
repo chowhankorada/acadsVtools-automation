@@ -59,7 +59,7 @@ public class BaseLibrary {
 
     public void mouseHover(WebElement findBy){
         Actions actions = new Actions(driver);
-        actions.moveToElement(findBy);
+        actions.moveToElement(findBy).perform();
     }
     public LocalDateTime indianTimeZoneDateTime(){
         ZoneId indianTimeZone = ZoneId.of("Asia/Kolkata");
