@@ -3,10 +3,14 @@ package BatchProgress;
 import TestComponents.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import pages.BatchMergePage;
 import pages.BatchPage;
 import pages.LandingPages;
 import pages.VtoolsSignUp;
+
+import java.sql.SQLOutput;
+import java.util.HashMap;
 
 public class BatchMerging extends BaseTest {
 
@@ -26,7 +30,9 @@ public class BatchMerging extends BaseTest {
         BatchMergePage mergePage = new BatchMergePage(driver);
         mergePage.batchMergePageOpening();
         mergePage.batchsSearchWithCourseId("63bd88dd5931861672553bd1");
-        mergePage.newParChildBatcheForMerge("parent+"+randomNum,"child+"+randomNum);
+        HashMap<String,String> map = mergePage.newParChildBatcheForMerge("parent+"+randomNum,"child+"+randomNum);
+        System.out.println(map.get("MergedParentBatchId"));
+        System.out.println(map.get("MergedChildBatchId"));
 
     }
 
