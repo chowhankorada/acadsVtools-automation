@@ -45,6 +45,7 @@ public class BatchMergePage extends BaseLibrary {
     WebElement batchMergeConfirmButton;
 
 
+
     public void batchMergePageOpening() {
         mouseHover(ontToFewTab);
         waitForElementToBeVisible(batchMergeCTABy);
@@ -153,6 +154,11 @@ public class BatchMergePage extends BaseLibrary {
         mergedBatchButton.click();
         batchMergeConfirmButton.click();
         return mergedBatchIds;
+
+    }
+
+    public void fetchingBatchData(){
+        HashMap<String , String > batch = new HashMap<>();
 
     }
 

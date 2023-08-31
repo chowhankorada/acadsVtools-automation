@@ -3,6 +3,7 @@ package library;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.DayOfWeek;
@@ -40,6 +41,11 @@ public class BaseLibrary {
     public void waitForElementToBeInvisible(WebElement findBy){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.invisibilityOf(findBy));
+    }
+
+    public  void selectWithVisibleText(WebElement finBy,String visibleText){
+        Select value = new Select(finBy);
+        value.selectByVisibleText(visibleText);
     }
 
     public void fullPageScroll(){

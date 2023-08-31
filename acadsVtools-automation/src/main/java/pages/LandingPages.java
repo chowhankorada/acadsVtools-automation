@@ -26,4 +26,8 @@ public class LandingPages extends BaseLibrary {
         driver.navigate().to("https://www.vedantuint.net");
         return new VtoolsSignUp(driver);
     }
+
+    public void batchPage(String batchId, String courseId){
+        driver.navigate().to("https://tools.vedantu.com/tools#/otf/course/"+courseId+"/batch/edit/"+batchId+"");
+    }
 }

@@ -86,9 +86,18 @@ public class BatchPage extends BaseLibrary {
     WebElement batchSaveConfirmation;
     @FindBy(xpath = "//button[contains(text(),'Ok')]")
     WebElement batchOk;
+    @FindBy(xpath = "//input[@placeholder='Enter Min 2 characters']")
+    WebElement teacherInput;
+    By suggestedTeacherBy = By.xpath("//div[contains(@class,'user-sugg')]");
+    @FindBy(xpath = "//div[contains(@class,'user-sugg')]")
+    WebElement suggestedTeacher;
+    @FindBy(xpath = "//input[contains(@name,'teacher-board')]/following-sibling::label")
+    WebElement teacherSubject;
+    @FindBy(xpath = "//select[@name='presenterRole']")
+    WebElement teacherRole;
 
 
-    public void batchCreation(String batchCapacity, String batchFillrate, String batchDuration, String batchGroupName, String enrolType, String uiSessionYear, String uiLangType, String uiLevelType, String uiSearchTerm, String batchPrice, long slotStartInNext, long slotEndInNext) throws InterruptedException {
+    public void batchCreation(String batchCapacity, String batchFillrate, String batchDuration, String batchGroupName, String enrolType, String uiSessionYear, String uiLangType, String uiLevelType, String uiSearchTerm, String batchPrice, long slotStartInNext, long slotEndInNext, String teacherEmail) throws InterruptedException {
         waitForElementToBeVisible(createBatchBy);
         waitForElementToBeClickable(createBatchBy);
         createBatch.click();
@@ -200,6 +209,16 @@ public class BatchPage extends BaseLibrary {
 
         //Batch last purchase date and time giving same as end date
         batchLastPurchaseDate.sendKeys(combinedEndDateTime);
+
+        //Adding teacher to batch
+        teacherInput.sendKeys(teacherEmail);
+        waitForElementToBeClickable(suggestedTeacherBy);
+        suggestedTeacher.click();
+        teacherSubject.click();
+        selectWithVisibleText(teacherRole,"TEACHER");
+
+
+
         savingBatch.click();
         batchSaveConfirmation.click();
         batchOk.click();

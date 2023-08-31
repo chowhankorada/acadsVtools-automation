@@ -26,6 +26,7 @@ public class VtoolsSignUp extends BaseLibrary {
     WebElement emailNextButoon;
     @FindBy(xpath = "//input[@id='password-input-field']")
     WebElement passwordInput;
+    By passwordInputBy = By.xpath("//input[@id='password-input-field']");
     @FindBy(xpath = "//input[@id='login-submit2']")
     WebElement passwordNextButton;
 
@@ -36,6 +37,7 @@ public class VtoolsSignUp extends BaseLibrary {
         signInButton.click();
         emailInput.sendKeys(adminEmail);
         emailNextButoon.click();
+        waitForElementToBeVisible(passwordInputBy);
         passwordInput.sendKeys(adminPassword);
         passwordNextButton.click();
 
