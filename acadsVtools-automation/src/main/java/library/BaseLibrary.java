@@ -6,12 +6,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.TextStyle;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class BaseLibrary {
 
@@ -77,6 +77,33 @@ public class BaseLibrary {
         ZoneId indianTimeZone = ZoneId.of("Asia/Kolkata");
         LocalDateTime currentIndianTime = LocalDateTime.now(indianTimeZone);
         return currentIndianTime.getDayOfWeek();
+    }
+
+    public long dateTimeInMillis(){
+        long currentTimeMillis = System.currentTimeMillis();
+        return currentTimeMillis;
+    }
+
+    public String milliesToDateTimeFormat(long timestampMillis){
+        Date date = new Date(timestampMillis);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+        String formattedDate = dateFormat.format(date);
+        return formattedDate;
+    }
+
+
+
+    public String millistoDayOfWeek(long currentTimeMillis){
+        // Create an Instant object from the current time
+        Instant currentInstant = Instant.ofEpochMilli(currentTimeMillis);
+        // Define a time zone (e.g., UTC, or your desired zone)
+        ZoneId zoneId = TimeZone.getDefault().toZoneId();
+        // Get the weekday from the Instant object
+        String weekday = currentInstant.atZone(zoneId)
+                .getDayOfWeek()
+                .getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        return weekday;
+
     }
 
 }

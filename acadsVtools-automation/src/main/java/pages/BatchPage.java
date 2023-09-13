@@ -95,6 +95,47 @@ public class BatchPage extends BaseLibrary {
     WebElement teacherSubject;
     @FindBy(xpath = "//select[@name='presenterRole']")
     WebElement teacherRole;
+    @FindBy(xpath = "//input[contains(@ng-model,'maxSessions')]")
+    WebElement maxSessionCount;
+    By maxSessionCountBy = By.xpath("//input[contains(@ng-model,'maxSessions')]");
+    @FindBy(xpath = "//input[@ng-model='sessionPlan.startDateTime']")
+    WebElement sessionStartDateInput;
+    @FindBy(xpath = "//input[@ng-model='sessionPlan.endDateTime']")
+    WebElement sessionEndDateInput;
+    @FindBy(xpath = "//label[contains(@for,'session_day')]")
+    List<WebElement> sessionDayOfWeek;
+    @FindBy(xpath = "//input[@ng-model='session.startTime']")
+    WebElement sessionStartTimeInput;
+    @FindBy(xpath = "//input[@ng-model='session.endTime']")
+    WebElement sessionEndTimeInput;
+    @FindBy(xpath = "//select[@ng-model='session.teacher']")
+    WebElement sessionTeacherElement;
+    @FindBy(xpath = "(//button[contains(text(),'Generate')])[2]")
+    WebElement sessionGenButton;
+    @FindBy(xpath = "//textarea[@placeholder='Agenda title']")
+    WebElement sessionTitle;
+    @FindBy(xpath = "//select[@ng-model='agenda.otmSessionType']")
+    WebElement sessionSourceTypes;
+    @FindBy(xpath = "//input[@value='Save Sessions']")
+    WebElement sessionSaving;
+    @FindBy(xpath = "//div[contains(text(),'curricullumTopics not present')]")
+    WebElement topicSelectionError;
+    @FindBy(xpath = "//button[contains(@class,'closeVMessagePopup')]")
+    WebElement topicSelectionErrorAck;
+    @FindBy(xpath = "//a[contains(text(),'Add topics *')]")
+    WebElement addingTopic;
+    @FindBy(xpath = "//li[@ng-repeat= 'topic in chapterCurriculum.nodes']/input")
+    WebElement firstTopic;
+    @FindBy(xpath = "//span[contains(text(),'Add')]")
+    WebElement topicAddButton;
+    @FindBy(xpath = "//div[contains(text(),'Sessions Added to Batch successfully')]")
+    WebElement successSessionCreation;
+    By successSessionCreationBy = By.xpath("//div[contains(text(),'Sessions Added to Batch successfully')]");
+    @FindBy(xpath = "//button[normalize-space()='Ok']")
+    WebElement sessionOk;
+    By sessionOkBy = By.xpath("//button[normalize-space()='Ok']");
+
+
 
 
     public void batchCreation(String batchCapacity, String batchFillrate, String batchDuration, String batchGroupName, String enrolType, String uiSessionYear, String uiLangType, String uiLevelType, String uiSearchTerm, String batchPrice, long slotStartInNext, long slotEndInNext, String teacherEmail) throws InterruptedException {
@@ -217,15 +258,67 @@ public class BatchPage extends BaseLibrary {
         teacherSubject.click();
         selectWithVisibleText(teacherRole,"TEACHER");
 
-
-
         savingBatch.click();
         batchSaveConfirmation.click();
         batchOk.click();
 
     }
 
-    public void currentBatchCourseId() {
+    public void addingSessionInBatch(long startTime,long endTime,String noOfSessions,String teacherEmailId, String sessionSourceTypeInput) {
+
+        waitForElementToBeClickable(maxSessionCountBy);
+        String sessionStartTime = milliesToDateTimeFormat(startTime);
+        long oneDayMillis = 24 * 60 * 60 * 1000L;
+        String sessionEndTime = milliesToDateTimeFormat(endTime+oneDayMillis);
+        maxSessionCount.clear();
+        maxSessionCount.sendKeys(noOfSessions);
+
+        String  yearStart = sessionStartTime.substring(0,4);
+        String monthStart = sessionStartTime.substring(5,7);
+        String dayStart = sessionStartTime.substring(8,10);
+        sessionStartDateInput.sendKeys(dayStart+monthStart+yearStart);
+
+        String  yearEnd = sessionEndTime.substring(0,4);
+        String monthEnd = sessionEndTime.substring(5,7);
+        String dayEnd = sessionEndTime.substring(8,10);
+        sessionEndDateInput.sendKeys(dayEnd+monthEnd+yearEnd);
+
+        for (WebElement dayOfWeek : sessionDayOfWeek){
+            if (dayOfWeek.getText().equalsIgnoreCase(millistoDayOfWeek(startTime))){
+                dayOfWeek.click();
+            }
+        }
+
+        String startHour = sessionStartTime.substring(11,13);
+        String startMin = sessionStartTime.substring(14,16);
+        String startAMPM = sessionStartTime.substring(20,22);
+        sessionStartTimeInput.sendKeys(startHour+startMin+startAMPM);
+
+        String endHour = sessionEndTime.substring(11,13);
+        String endMin = sessionEndTime.substring(14,16);
+        String endAMPM = sessionEndTime.substring(20,22);
+        sessionEndTimeInput.sendKeys(endHour+endMin+endAMPM);
+
+        //session details adding
+        Select sessionTeacher = new Select(sessionTeacherElement);
+        sessionTeacher.selectByValue(teacherEmailId);
+        sessionGenButton.click();
+
+        sessionTitle.sendKeys("Automation session");
+        Select sessionSourceType = new Select(sessionSourceTypes);
+        sessionSourceType.selectByVisibleText(sessionSourceTypeInput);
+        sessionSaving.click();
+
+        if(topicSelectionError.isDisplayed()){
+            topicSelectionErrorAck.click();
+            addingTopic.click();
+            firstTopic.click();
+            topicAddButton.click();
+            sessionSaving.click();
+        }
+        waitForElementToBeVisible(successSessionCreationBy);
+        waitForElementToBeClickable(sessionOkBy);
+        sessionOk.click();
 
     }
 

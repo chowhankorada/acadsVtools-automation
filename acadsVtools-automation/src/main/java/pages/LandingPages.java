@@ -28,6 +28,11 @@ public class LandingPages extends BaseLibrary {
     }
 
     public void batchPage(String batchId, String courseId){
-        driver.navigate().to("https://tools.vedantu.com/tools#/otf/course/"+courseId+"/batch/edit/"+batchId+"");
+        driver.navigate().to("https://tools.vedantuint.net/tools#/otf/course/"+courseId+"/batch/edit/"+batchId+"");
+    }
+
+    public TestCreationPage testCreationURL(){
+        driver.navigate().to("https://tools.vedantuint.net/tools#/question-set/upload");
+        return new TestCreationPage(driver);
     }
 }
